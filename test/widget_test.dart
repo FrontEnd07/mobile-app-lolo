@@ -78,7 +78,7 @@ void main() {
     tester,
   ) async {
     await mount(tester);
-    expect(find.text('MarketplaceAmid'), findsOneWidget);
+    expect(find.text('LOLO'), findsOneWidget);
     await tester.tap(find.text('Test phone'));
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(

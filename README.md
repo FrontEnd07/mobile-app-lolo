@@ -1,4 +1,4 @@
-# MarketplaceAmid — Flutter
+# LOLO — Flutter
 
 Мобильный клиент для Vendure из C:\Users\user\Desktop\marketplace.
 

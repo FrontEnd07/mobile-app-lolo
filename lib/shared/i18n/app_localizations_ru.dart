@@ -10,7 +10,7 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get appTitle => 'MarketplaceAmid';
+  String get appTitle => 'LOLO';
 
   @override
   String get navHome => 'Главная';

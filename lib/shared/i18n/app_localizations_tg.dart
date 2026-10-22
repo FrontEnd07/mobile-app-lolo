@@ -10,7 +10,7 @@ class AppLocalizationsTg extends AppLocalizations {
   AppLocalizationsTg([String locale = 'tg']) : super(locale);
 
   @override
-  String get appTitle => 'MarketplaceAmid';
+  String get appTitle => 'LOLO';
 
   @override
   String get navHome => 'Асосӣ';
