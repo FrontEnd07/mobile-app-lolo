@@ -4,6 +4,7 @@ import 'package:ecommerce_new/features/auth/index.dart';
 import 'package:ecommerce_new/widgets/catalog/index.dart';
 import 'package:ecommerce_new/widgets/cart_indicator/index.dart';
 import 'package:ecommerce_new/shared/i18n/app_localizations.dart';
+import 'package:ecommerce_new/shared/ui/branding/app_logo.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,7 +13,7 @@ class HomePage extends StatelessWidget {
     final l = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(l.appTitle),
+        title: const AppLogo(height: 24),
         actions: [
           IconButton(
             onPressed: () => context.push('/settings'),

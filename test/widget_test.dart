@@ -4,6 +4,7 @@ import 'package:ecommerce_new/app/app.dart';
 import 'package:ecommerce_new/entities/catalog/index.dart';
 import 'package:ecommerce_new/entities/settings/index.dart';
 import 'package:ecommerce_new/shared/storage/settings_storage.dart';
+import 'package:ecommerce_new/shared/ui/branding/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -77,8 +78,10 @@ void main() {
   testWidgets('Catalog opens product and changes selected variant', (
     tester,
   ) async {
+    await tester.binding.setSurfaceSize(const Size(800, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     await mount(tester);
-    expect(find.text('LOLO'), findsOneWidget);
+    expect(find.byType(AppLogo), findsOneWidget);
     await tester.tap(find.text('Test phone'));
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
