@@ -4,11 +4,11 @@ class Env {
   Env._();
 
   /// Точка входа Shop API Vendure.
-  /// Для эмулятора Android localhost хоста доступен через 10.0.2.2.
-  /// Для продакшена заменить на реальный домен.
+  /// По умолчанию используется production Shop API LOLO.tj.
+  /// Локальный адрес можно передать через --dart-define=VENDURE_API_URL=...
   static const String vendureEndpoint = String.fromEnvironment(
     'VENDURE_API_URL',
-    defaultValue: 'http://10.0.2.2:3000/shop-api',
+    defaultValue: 'https://lolo.tj/shop-api',
   );
 
   /// Токен канала Vendure.

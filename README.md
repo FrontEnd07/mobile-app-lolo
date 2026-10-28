@@ -15,10 +15,16 @@
 
     npm run dev:server
 
-Android-эмулятор:
+Production API используется по умолчанию:
 
     flutter pub get
     flutter run
+
+Адрес по умолчанию: `https://lolo.tj/shop-api`.
+
+Для локального сервера в Android-эмуляторе:
+
+    flutter run --dart-define=VENDURE_API_URL=http://10.0.2.2:3000/shop-api
 
 Телефон в одной сети с компьютером (подставьте LAN IP компьютера):
 
