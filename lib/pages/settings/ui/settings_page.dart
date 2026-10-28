@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommerce_new/entities/settings/index.dart';
 import 'package:ecommerce_new/shared/i18n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -84,9 +85,30 @@ class SettingsPage extends ConsumerWidget {
               ],
             ),
           ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: Text(l.privacyPolicy),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () => _openPrivacyPolicy(context, l),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _openPrivacyPolicy(
+    BuildContext context,
+    AppLocalizations l,
+  ) async {
+    final opened = await launchUrl(
+      Uri.parse('https://lolo.tj/privacy'),
+      mode: LaunchMode.externalApplication,
+    );
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l.linkOpenError)));
+    }
   }
 
   String _languageName(String code, AppLocalizations l) => switch (code) {

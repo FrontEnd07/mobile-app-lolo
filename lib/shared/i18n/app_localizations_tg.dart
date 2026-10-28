@@ -40,6 +40,12 @@ class AppLocalizationsTg extends AppLocalizations {
   String get settingsTheme => 'Мавзӯъ';
 
   @override
+  String get privacyPolicy => 'Сиёсати махфият';
+
+  @override
+  String get linkOpenError => 'Кушодани пайванд имкон нашуд';
+
+  @override
   String get themeLight => 'Равшан';
 
   @override

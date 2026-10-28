@@ -1,4 +1,4 @@
-package com.example.ecommerce_new
+package tj.lolo.app
 
 import io.flutter.embedding.android.FlutterActivity
 

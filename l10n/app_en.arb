@@ -10,6 +10,8 @@
   "settingsLanguage": "Language",
   "settingsCurrency": "Currency",
   "settingsTheme": "Theme",
+  "privacyPolicy": "Privacy policy",
+  "linkOpenError": "Could not open the link",
   "themeLight": "Light",
   "themeDark": "Dark",
   "themeSystem": "System",

@@ -40,6 +40,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTheme => 'Theme';
 
   @override
+  String get privacyPolicy => 'Privacy policy';
+
+  @override
+  String get linkOpenError => 'Could not open the link';
+
+  @override
   String get themeLight => 'Light';
 
   @override

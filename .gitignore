@@ -43,6 +43,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/build/
+
+# Android release signing secrets
+/android/key.properties
+/android/*.jks
+/android/*.keystore
 
 # Widget Preview related
 .widget_preview/

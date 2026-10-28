@@ -160,6 +160,18 @@ abstract class AppLocalizations {
   /// **'Тема'**
   String get settingsTheme;
 
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In ru, this message translates to:
+  /// **'Политика конфиденциальности'**
+  String get privacyPolicy;
+
+  /// No description provided for @linkOpenError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось открыть ссылку'**
+  String get linkOpenError;
+
   /// No description provided for @themeLight.
   ///
   /// In ru, this message translates to:

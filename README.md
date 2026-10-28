@@ -46,6 +46,12 @@ URL фотографий должен быть доступен с устрой�
     flutter analyze
     flutter test
 
+## Публикация
+
+Production application ID и Apple bundle ID: `tj.lolo.app`.
+Инструкции по подписи, сборке и обязательным требованиям магазинов находятся в
+[`docs/store-release.md`](docs/store-release.md).
+
 ## Следующие этапы
 
 Интеграция реальной оплаты,

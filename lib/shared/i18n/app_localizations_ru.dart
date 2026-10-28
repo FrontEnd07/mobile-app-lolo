@@ -40,6 +40,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsTheme => 'Тема';
 
   @override
+  String get privacyPolicy => 'Политика конфиденциальности';
+
+  @override
+  String get linkOpenError => 'Не удалось открыть ссылку';
+
+  @override
   String get themeLight => 'Светлая';
 
   @override
