@@ -222,6 +222,10 @@ class AppLocalizationsRu extends AppLocalizations {
       'Введите код, который отправил Telegram-бот';
 
   @override
+  String get otpSubtitlePlayReview =>
+      'Введите тестовый код для аккаунта Google Play';
+
+  @override
   String get otpLabel => 'Код подтверждения';
 
   @override

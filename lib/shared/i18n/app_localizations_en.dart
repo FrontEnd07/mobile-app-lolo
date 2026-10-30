@@ -221,6 +221,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpSubtitleTelegram => 'Enter the code sent by the Telegram bot';
 
   @override
+  String get otpSubtitlePlayReview =>
+      'Enter the test code for the Google Play account';
+
+  @override
   String get otpLabel => 'Verification code';
 
   @override

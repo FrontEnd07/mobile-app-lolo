@@ -46,6 +46,7 @@ class _OtpStepFormState extends ConsumerState<OtpStepForm> {
     final isLoading = ref.watch(authProvider.select((s) => s.isLoading));
     final phone = ref.watch(phoneAuthNumberProvider);
     final method = ref.watch(verificationMethodProvider);
+    final challenge = ref.watch(phoneVerificationChallengeProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,7 +59,9 @@ class _OtpStepFormState extends ConsumerState<OtpStepForm> {
         ),
         const SizedBox(height: 8),
         Text(
-          method == VerificationMethod.whatsapp
+          challenge?.deliveryRequired == false
+              ? l.otpSubtitlePlayReview
+              : method == VerificationMethod.whatsapp
               ? l.otpSubtitleWhatsApp(phone)
               : l.otpSubtitleTelegram,
           style: Theme.of(context).textTheme.bodyMedium,

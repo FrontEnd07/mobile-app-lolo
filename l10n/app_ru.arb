@@ -81,6 +81,7 @@
     }
   },
   "otpSubtitleTelegram": "Введите код, который отправил Telegram-бот",
+  "otpSubtitlePlayReview": "Введите тестовый код для аккаунта Google Play",
   "otpLabel": "Код подтверждения",
   "verifyOtpButton": "Подтвердить",
   "changePhoneButton": "Изменить номер",

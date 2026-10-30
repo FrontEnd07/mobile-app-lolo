@@ -42,9 +42,8 @@ class _PhoneStepFormState extends ConsumerState<PhoneStepForm> {
 
       ref.read(phoneAuthNumberProvider.notifier).state = phone;
       ref.read(phoneVerificationChallengeProvider.notifier).state = challenge;
-      ref
-          .read(phoneAuthStepProvider.notifier)
-          .state = method == VerificationMethod.telegram
+      ref.read(phoneAuthStepProvider.notifier).state =
+          challenge.deliveryRequired && method == VerificationMethod.telegram
           ? PhoneAuthStep.telegram
           : PhoneAuthStep.otp;
     } catch (_) {

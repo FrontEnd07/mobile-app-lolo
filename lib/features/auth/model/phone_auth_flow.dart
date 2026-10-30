@@ -9,11 +9,13 @@ class PhoneVerificationChallenge {
   const PhoneVerificationChallenge({
     required this.id,
     required this.method,
+    required this.deliveryRequired,
     this.telegramUrl,
   });
 
   final String id;
   final VerificationMethod method;
+  final bool deliveryRequired;
   final String? telegramUrl;
 }
 

@@ -21,6 +21,7 @@ void main() {
             'requestWhatsAppVerification': {
               'challengeId': 'challenge-1',
               'expiresAt': '2026-10-21T12:00:00.000Z',
+              'deliveryRequired': false,
             },
           },
         }),
@@ -39,6 +40,7 @@ void main() {
 
     expect(challenge.id, 'challenge-1');
     expect(challenge.method, VerificationMethod.whatsapp);
+    expect(challenge.deliveryRequired, isFalse);
   });
 
   test('Telegram request keeps the deep link returned by the server', () async {
@@ -50,6 +52,7 @@ void main() {
               'challengeId': 'challenge-2',
               'telegramUrl': 'https://t.me/example_bot?start=VERIFY_CODE',
               'expiresAt': '2026-10-21T12:00:00.000Z',
+              'deliveryRequired': true,
             },
           },
         }),

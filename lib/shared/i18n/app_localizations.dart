@@ -502,6 +502,12 @@ abstract class AppLocalizations {
   /// **'Введите код, который отправил Telegram-бот'**
   String get otpSubtitleTelegram;
 
+  /// No description provided for @otpSubtitlePlayReview.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите тестовый код для аккаунта Google Play'**
+  String get otpSubtitlePlayReview;
+
   /// No description provided for @otpLabel.
   ///
   /// In ru, this message translates to:

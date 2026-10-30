@@ -222,6 +222,10 @@ class AppLocalizationsTg extends AppLocalizations {
       'Коди фиристодаи Telegram-ботро ворид кунед';
 
   @override
+  String get otpSubtitlePlayReview =>
+      'Рамзи санҷиширо барои ҳисоби Google Play ворид кунед';
+
+  @override
   String get otpLabel => 'Коди тасдиқ';
 
   @override

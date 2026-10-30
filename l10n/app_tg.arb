@@ -81,6 +81,7 @@
     }
   },
   "otpSubtitleTelegram": "Коди фиристодаи Telegram-ботро ворид кунед",
+  "otpSubtitlePlayReview": "Рамзи санҷиширо барои ҳисоби Google Play ворид кунед",
   "otpLabel": "Коди тасдиқ",
   "verifyOtpButton": "Тасдиқ",
   "changePhoneButton": "Ивази рақам",

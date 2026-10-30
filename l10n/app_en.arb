@@ -81,6 +81,7 @@
     }
   },
   "otpSubtitleTelegram": "Enter the code sent by the Telegram bot",
+  "otpSubtitlePlayReview": "Enter the test code for the Google Play account",
   "otpLabel": "Verification code",
   "verifyOtpButton": "Confirm",
   "changePhoneButton": "Change number",

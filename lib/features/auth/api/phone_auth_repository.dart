@@ -25,6 +25,7 @@ class PhoneAuthRepository {
         challengeId
         telegramUrl
         expiresAt
+        deliveryRequired
       }
     }
   ''';
@@ -42,6 +43,7 @@ class PhoneAuthRepository {
       ) {
         challengeId
         expiresAt
+        deliveryRequired
       }
     }
   ''';
@@ -92,6 +94,7 @@ class PhoneAuthRepository {
     return PhoneVerificationChallenge(
       id: data['challengeId'] as String,
       method: method,
+      deliveryRequired: data['deliveryRequired'] != false,
       telegramUrl: data['telegramUrl'] as String?,
     );
   }
