@@ -1,9 +1,11 @@
 import 'package:ecommerce_new/features/auth/model/auth_provider.dart';
 import 'package:ecommerce_new/shared/i18n/app_localizations.dart';
+import 'package:ecommerce_new/shared/lib/login_destination.dart';
 import 'package:ecommerce_new/shared/ui/buttons/loading_button.dart';
 import 'package:ecommerce_new/shared/ui/inputs/otp_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ecommerce_new/features/auth/model/phone_auth_flow.dart';
 
 /// Второй шаг авторизации — ввод OTP-кода.
@@ -32,6 +34,10 @@ class _OtpStepFormState extends ConsumerState<OtpStepForm> {
     await ref
         .read(authProvider.notifier)
         .verifyOtp(challengeId: challenge.id, code: code);
+    if (!mounted || !ref.read(authProvider).isAuthenticated) return;
+
+    final target = GoRouterState.of(context).uri.queryParameters['from'];
+    context.go(loginDestination(target));
   }
 
   void _goBackToPhone() {

@@ -11,30 +11,12 @@ import 'package:ecommerce_new/pages/not_found/index.dart';
 import 'package:ecommerce_new/pages/product/index.dart';
 import 'package:ecommerce_new/pages/settings/index.dart';
 import 'package:ecommerce_new/pages/store/index.dart';
+import 'package:ecommerce_new/shared/lib/login_destination.dart';
+
+export 'package:ecommerce_new/shared/lib/login_destination.dart'
+    show loginDestination;
 
 import 'banking_page_transition.dart';
-
-String loginDestination(String? target) {
-  final uri = Uri.tryParse(target ?? '/');
-  if (uri == null || uri.hasScheme || uri.hasAuthority) return '/';
-  final path = uri.path;
-  return [
-            '/addresses',
-            '/profile',
-            '/cart',
-            '/checkout',
-            '/orders',
-            '/settings',
-            '/stores',
-            '/',
-          ].contains(path) ||
-          path.startsWith('/addresses/') ||
-          path.startsWith('/orders/') ||
-          path.startsWith('/product/') ||
-          path.startsWith('/store/')
-      ? uri.toString()
-      : '/';
-}
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final changes = ValueNotifier(false);
