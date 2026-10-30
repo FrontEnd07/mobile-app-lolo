@@ -7,6 +7,7 @@ import 'package:ecommerce_new/pages/auth/index.dart';
 import 'package:ecommerce_new/pages/cart/index.dart';
 import 'package:ecommerce_new/pages/checkout/index.dart';
 import 'package:ecommerce_new/pages/home/index.dart';
+import 'package:ecommerce_new/pages/not_found/index.dart';
 import 'package:ecommerce_new/pages/product/index.dart';
 import 'package:ecommerce_new/pages/settings/index.dart';
 import 'package:ecommerce_new/pages/store/index.dart';
@@ -44,6 +45,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
     initialLocation: '/',
     refreshListenable: changes,
+    errorPageBuilder: (_, state) =>
+        bankingPage(state: state, child: const NotFoundPage()),
     redirect: (context, state) {
       final authenticated = ref.read(authProvider).isAuthenticated;
       final path = state.matchedLocation;

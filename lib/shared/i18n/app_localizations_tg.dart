@@ -43,6 +43,27 @@ class AppLocalizationsTg extends AppLocalizations {
   String get privacyPolicy => 'Сиёсати махфият';
 
   @override
+  String get deleteAccount => 'Нест кардани ҳисоб';
+
+  @override
+  String get deleteAccountSubtitle =>
+      'Дархости нест кардани ҳисоб ва маълумоти шахсӣ';
+
+  @override
+  String get deleteAccountConfirmation =>
+      'Дархости нест кардани ҳисоб фиристода шавад? Дастаи LOLO онро месанҷад ва маълумотро нест ё беном мекунад, ба истиснои маълумоте, ки тибқи қонун нигоҳ доштан лозим аст.';
+
+  @override
+  String get deleteAccountRequest => 'Фиристодани дархост';
+
+  @override
+  String get deleteAccountRequestReceived => 'Дархости несткунӣ қабул шуд';
+
+  @override
+  String get deleteAccountRequestError =>
+      'Дархост фиристода нашуд. Дубора кӯшиш кунед.';
+
+  @override
   String get linkOpenError => 'Кушодани пайванд имкон нашуд';
 
   @override
@@ -74,6 +95,16 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get commonError => 'Хатогӣ';
+
+  @override
+  String get pageNotFoundTitle => 'Саҳифа ёфт нашуд';
+
+  @override
+  String get pageNotFoundDescription =>
+      'Чунин саҳифа вуҷуд надорад ё суроға нодуруст навишта шудааст.';
+
+  @override
+  String get pageNotFoundHome => 'Ба саҳифаи асосӣ';
 
   @override
   String get homeWelcome => 'Хуш омадед!';
@@ -219,6 +250,21 @@ class AppLocalizationsTg extends AppLocalizations {
   String get authErrorInvalidOtp => 'Код нодуруст';
 
   @override
+  String get authErrorTelegramUnavailable =>
+      'Боти Telegram ҳоло дастнорас аст. Онро дар админка дубора пайваст кунед.';
+
+  @override
+  String get authErrorWhatsAppUnavailable =>
+      'WhatsApp ҳоло дастнорас аст. Онро дар админка дубора пайваст кунед.';
+
+  @override
+  String get authErrorOtpCooldown =>
+      'Пеш аз дархости рамзи нав як дақиқа интизор шавед.';
+
+  @override
+  String get authErrorVerificationFailed => 'Дархости рамзи тасдиқ иҷро нашуд.';
+
+  @override
   String get catalogHeading => 'Он чизеро, ки лозим аст, ёбед';
 
   @override
@@ -265,12 +311,6 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get cartCheckout => 'Оформ кардани фармоиш';
-
-  @override
-  String get commonPrevious => 'Қафо';
-
-  @override
-  String get commonNext => 'Баъдӣ';
 
   @override
   String get productDetails => 'Дар бораи мол';

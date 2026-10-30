@@ -8,7 +8,7 @@ CustomTransitionPage<void> bankingPage({
   key: state.pageKey,
   child: child,
   transitionDuration: const Duration(milliseconds: 380),
-  reverseTransitionDuration: const Duration(milliseconds: 320),
+  reverseTransitionDuration: const Duration(milliseconds: 380),
   transitionsBuilder: (_, animation, secondaryAnimation, child) {
     final incoming = CurvedAnimation(
       parent: animation,

@@ -43,6 +43,27 @@ class AppLocalizationsRu extends AppLocalizations {
   String get privacyPolicy => 'Политика конфиденциальности';
 
   @override
+  String get deleteAccount => 'Удалить аккаунт';
+
+  @override
+  String get deleteAccountSubtitle =>
+      'Запросить удаление аккаунта и персональных данных';
+
+  @override
+  String get deleteAccountConfirmation =>
+      'Отправить запрос на удаление аккаунта? Команда LOLO проверит запрос и удалит или обезличит данные, кроме сведений, которые необходимо хранить по закону.';
+
+  @override
+  String get deleteAccountRequest => 'Отправить запрос';
+
+  @override
+  String get deleteAccountRequestReceived => 'Запрос на удаление принят';
+
+  @override
+  String get deleteAccountRequestError =>
+      'Не удалось отправить запрос. Повторите попытку.';
+
+  @override
   String get linkOpenError => 'Не удалось открыть ссылку';
 
   @override
@@ -74,6 +95,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get commonError => 'Ошибка';
+
+  @override
+  String get pageNotFoundTitle => 'Страница не найдена';
+
+  @override
+  String get pageNotFoundDescription =>
+      'Похоже, такой страницы больше нет или адрес указан неверно.';
+
+  @override
+  String get pageNotFoundHome => 'На главную';
 
   @override
   String get homeWelcome => 'Добро пожаловать!';
@@ -219,6 +250,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authErrorInvalidOtp => 'Неверный код';
 
   @override
+  String get authErrorTelegramUnavailable =>
+      'Telegram-бот сейчас недоступен. Переподключите его в админке.';
+
+  @override
+  String get authErrorWhatsAppUnavailable =>
+      'WhatsApp сейчас недоступен. Переподключите его в админке.';
+
+  @override
+  String get authErrorOtpCooldown =>
+      'Подождите минуту перед повторной отправкой кода.';
+
+  @override
+  String get authErrorVerificationFailed =>
+      'Не удалось запросить код подтверждения.';
+
+  @override
   String get catalogHeading => 'Найдите то, что вам нужно';
 
   @override
@@ -266,12 +313,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cartCheckout => 'Оформить заказ';
-
-  @override
-  String get commonPrevious => 'Назад';
-
-  @override
-  String get commonNext => 'Далее';
 
   @override
   String get productDetails => 'О товаре';

@@ -19,7 +19,7 @@ class AuthAvatar extends ConsumerWidget {
       return IconButton(
         icon: const Icon(Icons.person_outline),
         tooltip: l.loginTitle,
-        onPressed: () => context.goNamed('login'),
+        onPressed: () => context.pushNamed('login'),
       );
     }
 

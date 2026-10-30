@@ -4,6 +4,7 @@ import 'package:ecommerce_new/shared/api/vendure_client.dart';
 import 'package:ecommerce_new/entities/auth/index.dart';
 import 'package:ecommerce_new/features/auth/api/phone_auth_repository.dart';
 import 'package:ecommerce_new/features/auth/model/phone_auth_flow.dart';
+import 'package:ecommerce_new/shared/api/api_exception.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this._storage) : super(const AuthState());
@@ -149,10 +150,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(isLoading: false);
       return challenge;
     } catch (e) {
-      final key =
-          e is PhoneAuthException &&
-              e.errorCode == 'PHONE_NUMBER_VALIDATION_ERROR'
+      final message = e.toString().toLowerCase();
+      final key = message.contains('telegram verification is not available')
+          ? 'authErrorTelegramUnavailable'
+          : message.contains('whatsapp verification is not available')
+          ? 'authErrorWhatsAppUnavailable'
+          : message.contains('please wait before requesting another code')
+          ? 'authErrorOtpCooldown'
+          : message.contains('invalid phone') ||
+                (e is PhoneAuthException &&
+                    e.errorCode == 'PHONE_NUMBER_VALIDATION_ERROR')
           ? 'authErrorInvalidPhone'
+          : e is ApiException && e.code != 'NETWORK'
+          ? 'authErrorVerificationFailed'
           : 'authErrorNetwork';
       state = state.copyWith(isLoading: false, error: key);
       rethrow;

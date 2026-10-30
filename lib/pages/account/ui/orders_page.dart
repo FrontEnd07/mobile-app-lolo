@@ -1,30 +1,56 @@
 import 'package:ecommerce_new/shared/ui/navigation/app_back_button.dart';
 import 'package:ecommerce_new/shared/i18n/app_localizations.dart';
 import 'package:ecommerce_new/shared/ui/feedback/async_content.dart';
-import 'package:ecommerce_new/shared/ui/navigation/pagination_bar.dart';
+import 'package:ecommerce_new/shared/ui/feedback/lazy_load_footer.dart';
 import 'package:ecommerce_new/shared/lib/format_price.dart';
-import 'package:ecommerce_new/shared/lib/json.dart';
 import 'package:ecommerce_new/entities/order/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecommerce_new/entities/settings/index.dart';
 
-class OrdersPage extends ConsumerWidget {
+class OrdersPage extends ConsumerStatefulWidget {
   const OrdersPage({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OrdersPage> createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends ConsumerState<OrdersPage> {
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(_loadMore);
+  }
+
+  void _loadMore() {
+    if (scrollController.position.extentAfter < 400) {
+      ref.read(orderHistoryProvider.notifier).loadMore();
+    }
+  }
+
+  @override
+  void dispose() {
+    scrollController
+      ..removeListener(_loadMore)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final language = ref.watch(settingsProvider).locale.languageCode;
     final orders = ref.watch(orderHistoryProvider);
-    final offset = ref.watch(orderHistoryOffsetProvider);
     return Scaffold(
       appBar: AppBar(
         leading: const AppBackButton(fallback: '/profile'),
         title: Text(l.ordersTitle),
         actions: [
           IconButton(
-            onPressed: () => ref.invalidate(orderHistoryProvider),
+            onPressed: () => ref.read(orderHistoryProvider.notifier).refresh(),
             icon: const Icon(Icons.refresh),
             tooltip: l.commonRefresh,
           ),
@@ -32,19 +58,20 @@ class OrdersPage extends ConsumerWidget {
       ),
       body: AsyncContent(
         value: orders,
-        onRetry: () => ref.invalidate(orderHistoryProvider),
+        onRetry: () => ref.read(orderHistoryProvider.notifier).refresh(),
         builder: (data) {
           if (data == null) {
             return Center(child: Text(l.sessionExpired));
           }
-          final items = List<Json>.from(data['items']);
-          final total = data['totalItems'] as int;
+          final items = data.items;
           return RefreshIndicator(
             onRefresh: () async {
-              ref.invalidate(orderHistoryProvider);
-              await ref.read(orderHistoryProvider.future);
+              await ref
+                  .read(orderHistoryProvider.notifier)
+                  .refresh(showLoading: false);
             },
             child: ListView(
+              controller: scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(20),
               children: [
@@ -75,16 +102,12 @@ class OrdersPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                if (total > 10 || offset > 0)
-                  PaginationBar(
-                    offset: offset,
-                    count: items.length,
-                    total: total,
-                    pageSize: 10,
-                    onChanged: (value) =>
-                        ref.read(orderHistoryOffsetProvider.notifier).state =
-                            value,
-                  ),
+                LazyLoadFooter(
+                  loading: data.isLoadingMore,
+                  error: data.loadMoreError,
+                  onRetry: () =>
+                      ref.read(orderHistoryProvider.notifier).loadMore(),
+                ),
               ],
             ),
           );
