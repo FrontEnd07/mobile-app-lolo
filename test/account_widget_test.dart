@@ -5,6 +5,7 @@ import 'package:ecommerce_new/entities/customer/index.dart';
 import 'package:ecommerce_new/entities/settings/index.dart';
 import 'package:ecommerce_new/pages/account/index.dart';
 import 'package:ecommerce_new/shared/storage/settings_storage.dart';
+import 'package:ecommerce_new/shared/model/paged_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -48,7 +49,8 @@ void main() {
         overrides: [
           settingsStorageProvider.overrideWithValue(await storage()),
           orderHistoryProvider.overrideWith(
-            (ref) async => {'totalItems': 0, 'items': []},
+            (ref) =>
+                PagedDataNotifier((_) async => {'totalItems': 0, 'items': []}),
           ),
         ],
         child: const TestApp(home: OrdersPage()),

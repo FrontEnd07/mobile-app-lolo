@@ -1,6 +1,5 @@
 import 'package:ecommerce_new/shared/i18n/app_localizations.dart';
-import 'package:ecommerce_new/shared/ui/navigation/pagination_bar.dart';
-import 'package:ecommerce_new/shared/lib/json.dart';
+import 'package:ecommerce_new/shared/ui/feedback/lazy_load_footer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,23 +7,50 @@ import 'package:ecommerce_new/entities/catalog/index.dart';
 
 import 'package:ecommerce_new/features/browse_catalog/index.dart';
 
-class CatalogView extends ConsumerWidget {
+class CatalogView extends ConsumerStatefulWidget {
   const CatalogView({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CatalogView> createState() => _CatalogViewState();
+}
+
+class _CatalogViewState extends ConsumerState<CatalogView> {
+  late final ScrollController scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController()..addListener(_loadMore);
+  }
+
+  void _loadMore() {
+    if (scrollController.position.extentAfter < 600) {
+      ref.read(catalogProvider.notifier).loadMore();
+    }
+  }
+
+  @override
+  void dispose() {
+    scrollController
+      ..removeListener(_loadMore)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final products = ref.watch(catalogProvider);
     final collections = ref.watch(collectionsProvider);
     final selected = ref.watch(selectedCollectionProvider);
-    final offset = ref.watch(catalogPageProvider);
-    void resetPage() => ref.read(catalogPageProvider.notifier).state = 0;
     return RefreshIndicator(
       onRefresh: () async {
         ref.invalidate(collectionsProvider);
-        ref.invalidate(catalogProvider);
-        await ref.read(catalogProvider.future);
+        await ref.read(catalogProvider.notifier).refresh(showLoading: false);
       },
       child: CustomScrollView(
+        controller: scrollController,
+        physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
@@ -54,7 +80,6 @@ class CatalogView extends ConsumerWidget {
                       hintText: l.catalogSearch,
                     ),
                     onFieldSubmitted: (value) {
-                      resetPage();
                       ref.read(searchTermProvider.notifier).state = value
                           .trim();
                     },
@@ -74,7 +99,6 @@ class CatalogView extends ConsumerWidget {
                             label: Text(l.catalogAllProducts),
                             selected: selected == null,
                             onSelected: (_) {
-                              resetPage();
                               ref
                                       .read(selectedCollectionProvider.notifier)
                                       .state =
@@ -88,7 +112,6 @@ class CatalogView extends ConsumerWidget {
                                 label: Text(item['name'] as String),
                                 selected: selected == item['id'],
                                 onSelected: (_) {
-                                  resetPage();
                                   ref
                                           .read(
                                             selectedCollectionProvider.notifier,
@@ -136,8 +159,9 @@ class CatalogView extends ConsumerWidget {
               ),
             ],
             data: (data) {
-              final items = List<Json>.from(data['items']);
-              final total = data['totalItems'] as int;
+              final page = data!;
+              final items = page.items;
+              final total = page.total;
               if (items.isEmpty) {
                 return [
                   SliverFillRemaining(
@@ -177,13 +201,11 @@ class CatalogView extends ConsumerWidget {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: PaginationBar(
-                    offset: offset,
-                    count: items.length,
-                    total: total,
-                    pageSize: 20,
-                    onChanged: (value) =>
-                        ref.read(catalogPageProvider.notifier).state = value,
+                  child: LazyLoadFooter(
+                    loading: page.isLoadingMore,
+                    error: page.loadMoreError,
+                    onRetry: () =>
+                        ref.read(catalogProvider.notifier).loadMore(),
                   ),
                 ),
               ];

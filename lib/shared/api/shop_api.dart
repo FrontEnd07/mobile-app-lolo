@@ -39,14 +39,14 @@ class ShopApi {
       throw const ApiException('LOGIN_REQUIRED');
     }
     final transport = httpClient ?? createHttpClient();
-    final client = GraphQLClient(
+    GraphQLClient client({required bool includeCurrency}) => GraphQLClient(
       link: HttpLink(
         Uri.parse(Env.vendureEndpoint)
             .replace(
               queryParameters: {
                 ...Uri.parse(Env.vendureEndpoint).queryParameters,
                 'languageCode': language,
-                'currencyCode': currency,
+                if (includeCurrency) 'currencyCode': currency,
               },
             )
             .toString(),
@@ -62,25 +62,32 @@ class ShopApi {
       ),
       cache: GraphQLCache(),
     );
-    try {
-      final request = mutation
-          ? client.mutate(
+    Future<QueryResult<Json>> send({required bool includeCurrency}) {
+      final graphql = client(includeCurrency: includeCurrency);
+      return mutation
+          ? graphql.mutate(
               MutationOptions(
                 document: gql(document),
                 variables: variables,
                 fetchPolicy: FetchPolicy.noCache,
               ),
             )
-          : client.query(
+          : graphql.query(
               QueryOptions(
                 document: gql(document),
                 variables: variables,
                 fetchPolicy: FetchPolicy.noCache,
               ),
             );
-      final result = await request.timeout(
-        const Duration(seconds: Env.requestTimeoutSeconds),
-      );
+    }
+
+    try {
+      var result = await send(includeCurrency: true)
+          .timeout(const Duration(seconds: Env.requestTimeoutSeconds));
+      if (_currencyIsUnavailable(result)) {
+        result = await send(includeCurrency: false)
+            .timeout(const Duration(seconds: Env.requestTimeoutSeconds));
+      }
       if (result.hasException) {
         final error = result.exception?.graphqlErrors.firstOrNull;
         final code = error?.extensions?['code'] as String? ?? 'NETWORK';
@@ -95,6 +102,14 @@ class ShopApi {
       // A caller owns an injected client; normal requests own their transport.
       if (httpClient == null) transport.close();
     }
+  }
+
+  bool _currencyIsUnavailable(QueryResult<Json> result) {
+    final error = result.exception?.graphqlErrors.firstOrNull;
+    final message = error?.message.toLowerCase() ?? '';
+    return error?.extensions?['code'] == 'USER_INPUT_ERROR' &&
+        message.contains('currency') &&
+        message.contains('not available');
   }
 }
 

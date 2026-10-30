@@ -14,6 +14,10 @@ String localizeError(AppLocalizations l, String key) {
     'authErrorEmailTaken' => l.authErrorEmailTaken,
     'authErrorInvalidPhone' => l.authErrorInvalidPhone,
     'authErrorInvalidOtp' => l.authErrorInvalidOtp,
+    'authErrorTelegramUnavailable' => l.authErrorTelegramUnavailable,
+    'authErrorWhatsAppUnavailable' => l.authErrorWhatsAppUnavailable,
+    'authErrorOtpCooldown' => l.authErrorOtpCooldown,
+    'authErrorVerificationFailed' => l.authErrorVerificationFailed,
     _ => key,
   };
 }

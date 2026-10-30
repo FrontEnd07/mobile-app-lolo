@@ -3,6 +3,7 @@ import 'package:ecommerce_new/features/auth/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ecommerce_new/entities/settings/index.dart';
+import 'package:ecommerce_new/entities/customer/index.dart';
 import 'package:ecommerce_new/shared/i18n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,6 +15,18 @@ class SettingsPage extends ConsumerWidget {
     final l = AppLocalizations.of(context);
     final settings = ref.watch(settingsProvider);
     final notifier = ref.read(settingsProvider.notifier);
+    final channelCurrencies = ref.watch(channelCurrenciesProvider);
+    ref.listen(channelCurrenciesProvider, (_, next) {
+      next.whenData((currencies) {
+        final selected = ref.read(settingsProvider).currencyCode;
+        if (currencies.isNotEmpty && !currencies.contains(selected)) {
+          notifier.setCurrency(currencies.first);
+        }
+      });
+    });
+    final isAuthenticated = ref.watch(
+      authProvider.select((state) => state.isAuthenticated),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -56,11 +69,22 @@ class SettingsPage extends ConsumerWidget {
             trailing: PopupMenuButton<String>(
               icon: const Icon(Icons.arrow_drop_down),
               onSelected: notifier.setCurrency,
-              itemBuilder: (_) => [
-                PopupMenuItem(value: 'TJS', child: Text(l.currencyTjs)),
-                PopupMenuItem(value: 'USD', child: Text(l.currencyUsd)),
-                PopupMenuItem(value: 'RUB', child: Text(l.currencyRub)),
-              ],
+              itemBuilder: (_) => channelCurrencies.maybeWhen(
+                data: (currencies) => currencies
+                    .map(
+                      (code) => PopupMenuItem(
+                        value: code,
+                        child: Text(_currencyName(code, l)),
+                      ),
+                    )
+                    .toList(),
+                orElse: () => [
+                  PopupMenuItem(
+                    value: settings.currencyCode,
+                    child: Text(_currencyName(settings.currencyCode, l)),
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -92,9 +116,62 @@ class SettingsPage extends ConsumerWidget {
             trailing: const Icon(Icons.open_in_new),
             onTap: () => _openPrivacyPolicy(context, l),
           ),
+          if (isAuthenticated)
+            ListTile(
+              leading: Icon(
+                Icons.delete_forever_outlined,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              title: Text(
+                l.deleteAccount,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              subtitle: Text(l.deleteAccountSubtitle),
+              onTap: () => _requestAccountDeletion(context, ref, l),
+            ),
         ],
       ),
     );
+  }
+
+  Future<void> _requestAccountDeletion(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l.deleteAccount),
+        content: Text(l.deleteAccountConfirmation),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l.commonCancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l.deleteAccountRequest),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+    try {
+      await ref
+          .read(customerRepositoryProvider)
+          .requestAccountDeletion(Localizations.localeOf(context).languageCode);
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l.deleteAccountRequestReceived)));
+      }
+    } catch (_) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(l.deleteAccountRequestError)));
+      }
+    }
   }
 
   Future<void> _openPrivacyPolicy(
@@ -122,5 +199,12 @@ class SettingsPage extends ConsumerWidget {
     ThemeMode.light => l.themeLight,
     ThemeMode.dark => l.themeDark,
     ThemeMode.system => l.themeSystem,
+  };
+
+  String _currencyName(String code, AppLocalizations l) => switch (code) {
+    'TJS' => l.currencyTjs,
+    'USD' => l.currencyUsd,
+    'RUB' => l.currencyRub,
+    _ => code,
   };
 }

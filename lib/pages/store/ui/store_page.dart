@@ -3,8 +3,8 @@ import 'package:ecommerce_new/entities/store/index.dart';
 import 'package:ecommerce_new/shared/i18n/app_localizations.dart';
 import 'package:ecommerce_new/shared/lib/json.dart';
 import 'package:ecommerce_new/shared/ui/feedback/async_content.dart';
+import 'package:ecommerce_new/shared/ui/feedback/lazy_load_footer.dart';
 import 'package:ecommerce_new/shared/ui/navigation/app_back_button.dart';
-import 'package:ecommerce_new/shared/ui/navigation/pagination_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,13 +19,34 @@ class StorePage extends ConsumerStatefulWidget {
 
 class _StorePageState extends ConsumerState<StorePage> {
   final search = TextEditingController();
+  final scrollController = ScrollController();
   String term = '';
   String? collectionId;
-  int offset = 0;
+
+  StoreProductQuery get productQuery => (
+    channelToken: widget.channelToken,
+    collectionId: collectionId,
+    term: term,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(_loadMore);
+  }
+
+  void _loadMore() {
+    if (scrollController.position.extentAfter < 600) {
+      ref.read(storeProductsProvider(productQuery).notifier).loadMore();
+    }
+  }
 
   @override
   void dispose() {
     search.dispose();
+    scrollController
+      ..removeListener(_loadMore)
+      ..dispose();
     super.dispose();
   }
 
@@ -68,35 +89,16 @@ class _StorePageState extends ConsumerState<StorePage> {
     final collections = ref.watch(
       storeCollectionsProvider(widget.channelToken),
     );
-    final products = ref.watch(
-      storeProductsProvider((
-        channelToken: widget.channelToken,
-        collectionId: collectionId,
-        term: term,
-        skip: offset,
-      )),
-    );
+    final products = ref.watch(storeProductsProvider(productQuery));
     return RefreshIndicator(
       onRefresh: () async {
         ref.invalidate(storeCollectionsProvider(widget.channelToken));
-        ref.invalidate(
-          storeProductsProvider((
-            channelToken: widget.channelToken,
-            collectionId: collectionId,
-            term: term,
-            skip: offset,
-          )),
-        );
-        await ref.read(
-          storeProductsProvider((
-            channelToken: widget.channelToken,
-            collectionId: collectionId,
-            term: term,
-            skip: offset,
-          )).future,
-        );
+        await ref
+            .read(storeProductsProvider(productQuery).notifier)
+            .refresh(showLoading: false);
       },
       child: CustomScrollView(
+        controller: scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverPadding(
@@ -119,7 +121,6 @@ class _StorePageState extends ConsumerState<StorePage> {
                     ),
                     onSubmitted: (value) => setState(() {
                       term = value.trim();
-                      offset = 0;
                     }),
                   ),
                   const SizedBox(height: 8),
@@ -182,19 +183,15 @@ class _StorePageState extends ConsumerState<StorePage> {
               SliverFillRemaining(
                 child: RetryView(
                   message: l.catalogLoadError,
-                  onRetry: () => ref.invalidate(
-                    storeProductsProvider((
-                      channelToken: widget.channelToken,
-                      collectionId: collectionId,
-                      term: term,
-                      skip: offset,
-                    )),
-                  ),
+                  onRetry: () => ref
+                      .read(storeProductsProvider(productQuery).notifier)
+                      .refresh(),
                 ),
               ),
             ],
             data: (data) {
-              final items = List<Json>.from(data['items']);
+              final page = data!;
+              final items = page.items;
               if (items.isEmpty) {
                 return [
                   SliverFillRemaining(
@@ -206,9 +203,7 @@ class _StorePageState extends ConsumerState<StorePage> {
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   sliver: SliverToBoxAdapter(
-                    child: Text(
-                      l.catalogProductCount(data['totalItems'] as int),
-                    ),
+                    child: Text(l.catalogProductCount(page.total)),
                   ),
                 ),
                 SliverPadding(
@@ -236,12 +231,12 @@ class _StorePageState extends ConsumerState<StorePage> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: PaginationBar(
-                    offset: offset,
-                    count: items.length,
-                    total: data['totalItems'] as int,
-                    pageSize: 20,
-                    onChanged: (value) => setState(() => offset = value),
+                  child: LazyLoadFooter(
+                    loading: page.isLoadingMore,
+                    error: page.loadMoreError,
+                    onRetry: () => ref
+                        .read(storeProductsProvider(productQuery).notifier)
+                        .loadMore(),
                   ),
                 ),
               ];
@@ -254,6 +249,5 @@ class _StorePageState extends ConsumerState<StorePage> {
 
   void _selectCollection(String? id) => setState(() {
     collectionId = id;
-    offset = 0;
   });
 }

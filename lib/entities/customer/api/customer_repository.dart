@@ -75,4 +75,19 @@ class CustomerRepository {
       throw const ApiException('ADDRESS_DELETE_FAILED');
     }
   }
+
+  Future<void> requestAccountDeletion(String locale) async {
+    final result = await api.execute(
+      r'''
+      mutation RequestAccountDeletion($locale: String) {
+        requestAccountDeletion(locale: $locale) { id status }
+      }
+      ''',
+      {'locale': locale},
+      true,
+    );
+    if (result['requestAccountDeletion']?['id'] == null) {
+      throw const ApiException('ACCOUNT_DELETION_REQUEST_FAILED');
+    }
+  }
 }

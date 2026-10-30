@@ -43,6 +43,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get privacyPolicy => 'Privacy policy';
 
   @override
+  String get deleteAccount => 'Delete account';
+
+  @override
+  String get deleteAccountSubtitle =>
+      'Request deletion of your account and personal data';
+
+  @override
+  String get deleteAccountConfirmation =>
+      'Submit an account deletion request? The LOLO team will review it and delete or anonymize your data, except information that must be retained by law.';
+
+  @override
+  String get deleteAccountRequest => 'Submit request';
+
+  @override
+  String get deleteAccountRequestReceived => 'Deletion request received';
+
+  @override
+  String get deleteAccountRequestError =>
+      'The request could not be sent. Please retry.';
+
+  @override
   String get linkOpenError => 'Could not open the link';
 
   @override
@@ -74,6 +95,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonError => 'Error';
+
+  @override
+  String get pageNotFoundTitle => 'Page not found';
+
+  @override
+  String get pageNotFoundDescription =>
+      'This page no longer exists or the address is incorrect.';
+
+  @override
+  String get pageNotFoundHome => 'Go home';
 
   @override
   String get homeWelcome => 'Welcome!';
@@ -218,6 +249,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authErrorInvalidOtp => 'Invalid code';
 
   @override
+  String get authErrorTelegramUnavailable =>
+      'The Telegram bot is currently unavailable. Reconnect it in the dashboard.';
+
+  @override
+  String get authErrorWhatsAppUnavailable =>
+      'WhatsApp is currently unavailable. Reconnect it in the dashboard.';
+
+  @override
+  String get authErrorOtpCooldown =>
+      'Wait one minute before requesting another code.';
+
+  @override
+  String get authErrorVerificationFailed =>
+      'Could not request a verification code.';
+
+  @override
   String get catalogHeading => 'Find your next favorite';
 
   @override
@@ -264,12 +311,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cartCheckout => 'Checkout';
-
-  @override
-  String get commonPrevious => 'Previous';
-
-  @override
-  String get commonNext => 'Next';
 
   @override
   String get productDetails => 'Product details';

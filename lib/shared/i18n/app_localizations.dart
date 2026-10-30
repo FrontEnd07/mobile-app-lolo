@@ -166,6 +166,42 @@ abstract class AppLocalizations {
   /// **'Политика конфиденциальности'**
   String get privacyPolicy;
 
+  /// No description provided for @deleteAccount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Удалить аккаунт'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountSubtitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запросить удаление аккаунта и персональных данных'**
+  String get deleteAccountSubtitle;
+
+  /// No description provided for @deleteAccountConfirmation.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отправить запрос на удаление аккаунта? Команда LOLO проверит запрос и удалит или обезличит данные, кроме сведений, которые необходимо хранить по закону.'**
+  String get deleteAccountConfirmation;
+
+  /// No description provided for @deleteAccountRequest.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отправить запрос'**
+  String get deleteAccountRequest;
+
+  /// No description provided for @deleteAccountRequestReceived.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запрос на удаление принят'**
+  String get deleteAccountRequestReceived;
+
+  /// No description provided for @deleteAccountRequestError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось отправить запрос. Повторите попытку.'**
+  String get deleteAccountRequestError;
+
   /// No description provided for @linkOpenError.
   ///
   /// In ru, this message translates to:
@@ -231,6 +267,24 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Ошибка'**
   String get commonError;
+
+  /// No description provided for @pageNotFoundTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Страница не найдена'**
+  String get pageNotFoundTitle;
+
+  /// No description provided for @pageNotFoundDescription.
+  ///
+  /// In ru, this message translates to:
+  /// **'Похоже, такой страницы больше нет или адрес указан неверно.'**
+  String get pageNotFoundDescription;
+
+  /// No description provided for @pageNotFoundHome.
+  ///
+  /// In ru, this message translates to:
+  /// **'На главную'**
+  String get pageNotFoundHome;
 
   /// No description provided for @homeWelcome.
   ///
@@ -502,6 +556,30 @@ abstract class AppLocalizations {
   /// **'Неверный код'**
   String get authErrorInvalidOtp;
 
+  /// No description provided for @authErrorTelegramUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Telegram-бот сейчас недоступен. Переподключите его в админке.'**
+  String get authErrorTelegramUnavailable;
+
+  /// No description provided for @authErrorWhatsAppUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'WhatsApp сейчас недоступен. Переподключите его в админке.'**
+  String get authErrorWhatsAppUnavailable;
+
+  /// No description provided for @authErrorOtpCooldown.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подождите минуту перед повторной отправкой кода.'**
+  String get authErrorOtpCooldown;
+
+  /// No description provided for @authErrorVerificationFailed.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось запросить код подтверждения.'**
+  String get authErrorVerificationFailed;
+
   /// No description provided for @catalogHeading.
   ///
   /// In ru, this message translates to:
@@ -591,18 +669,6 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Оформить заказ'**
   String get cartCheckout;
-
-  /// No description provided for @commonPrevious.
-  ///
-  /// In ru, this message translates to:
-  /// **'Назад'**
-  String get commonPrevious;
-
-  /// No description provided for @commonNext.
-  ///
-  /// In ru, this message translates to:
-  /// **'Далее'**
-  String get commonNext;
 
   /// No description provided for @productDetails.
   ///

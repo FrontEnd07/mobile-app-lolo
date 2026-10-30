@@ -1,5 +1,6 @@
 import 'package:ecommerce_new/features/browse_catalog/index.dart';
 import 'package:ecommerce_new/shared/lib/format_price.dart';
+import 'package:ecommerce_new/shared/model/paged_data.dart';
 import 'package:ecommerce_new/app/app.dart';
 import 'package:ecommerce_new/entities/catalog/index.dart';
 import 'package:ecommerce_new/entities/settings/index.dart';
@@ -22,24 +23,26 @@ Future<void> mount(
       overrides: [
         settingsStorageProvider.overrideWithValue(SettingsStorage(prefs)),
         collectionsProvider.overrideWith((ref) async => []),
-        catalogProvider.overrideWith((ref) async {
-          if (fail) throw StateError('Offline');
-          return {
-            'totalItems': empty ? 0 : 1,
-            'items': empty
-                ? []
-                : [
-                    {
-                      'productId': '1',
-                      'productName': 'Test phone',
-                      'slug': 'test-phone',
-                      'currencyCode': 'TJS',
-                      'productAsset': null,
-                      'priceWithTax': {'value': 12345},
-                    },
-                  ],
-          };
-        }),
+        catalogProvider.overrideWith(
+          (ref) => PagedDataNotifier((_) async {
+            if (fail) throw StateError('Offline');
+            return {
+              'totalItems': empty ? 0 : 1,
+              'items': empty
+                  ? []
+                  : [
+                      {
+                        'productId': '1',
+                        'productName': 'Test phone',
+                        'slug': 'test-phone',
+                        'currencyCode': 'TJS',
+                        'productAsset': null,
+                        'priceWithTax': {'value': 12345},
+                      },
+                    ],
+            };
+          }),
+        ),
         productProvider('test-phone').overrideWith(
           (ref) async => {
             'name': 'Test phone',
