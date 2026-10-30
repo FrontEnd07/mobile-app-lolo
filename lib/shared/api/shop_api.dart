@@ -57,6 +57,7 @@ class ShopApi {
         defaultHeaders: {
           'vendure-token':
               channelToken ?? this.channelToken ?? Env.channelToken,
+          'vendure-token-method': 'bearer',
           if (token != null) 'Authorization': 'Bearer $token',
         },
       ),

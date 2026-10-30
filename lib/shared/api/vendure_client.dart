@@ -3,13 +3,11 @@ import 'package:ecommerce_new/shared/config/env.dart';
 
 class VendureClient {
   VendureClient._();
-  static String _languageCode = 'ru';
 
   static Future<void> initialize({
     required String languageCode,
     String? token,
   }) async {
-    _languageCode = languageCode;
     if (token != null && token.isNotEmpty) {
       // Токен есть — создаём клиент СРАЗУ с заголовком Authorization
       await Vendure.initializeWithCustomAuth(
@@ -30,8 +28,10 @@ class VendureClient {
     }
   }
 
-  static Future<void> setAuthToken(String token) =>
-      initialize(languageCode: _languageCode, token: token);
+  static Future<void> setAuthToken(String token) async {
+    Vendure.setAuthToken(token);
+  }
+
   static void clearAuthToken() => Vendure.setAuthToken('');
   static Vendure get instance => Vendure.instance;
 }

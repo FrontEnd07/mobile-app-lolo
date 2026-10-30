@@ -76,6 +76,7 @@ void main() {
     final client = MockClient((request) async {
       final body = jsonDecode(request.body) as Map<String, dynamic>;
       expect(body['query'], contains('confirmCustomerPhoneVerification'));
+      expect(request.headers['vendure-token-method'], 'bearer');
       expect(body['variables'], {
         'challengeId': 'challenge-1',
         'code': '123456',
