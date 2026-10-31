@@ -1,5 +1,5 @@
 # Copy this file to android/key.properties and replace every placeholder.
-# Never commit key.properties or the upload keystore.
+# Keep the real upload key and credentials only in an access-restricted private repository.
 storePassword=CHANGE_ME
 keyPassword=CHANGE_ME
 keyAlias=upload

@@ -56,7 +56,9 @@ flutter doctor --android-licenses
 
 ### 2. Создать upload key
 
-Храните ключ и пароли в менеджере секретов и в защищённой резервной копии.
+Постоянный upload key и `key.properties` хранятся в приватном репозитории по
+решению владельца проекта. Ограничьте доступ к репозиторию и сохраните ещё одну
+зашифрованную резервную копию вне GitHub.
 
 ```powershell
 keytool -genkeypair -v `
@@ -66,8 +68,8 @@ keytool -genkeypair -v `
 Copy-Item android/key.properties.example android/key.properties
 ```
 
-Заполните `android/key.properties`. Оба файла исключены из Git. Включите
-Play App Signing при создании первого релиза.
+Заполните `android/key.properties`. Включите Play App Signing при создании
+первого релиза.
 
 ### 3. Собрать Android App Bundle
 

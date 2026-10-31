@@ -45,10 +45,7 @@ app.*.map.json
 /android/app/release
 /android/build/
 
-# Android release signing secrets
-/android/key.properties
-/android/*.jks
-/android/*.keystore
+# Android upload key is intentionally versioned in this private repository.
 
 # Widget Preview related
 .widget_preview/
