@@ -6,7 +6,7 @@
 - Android application ID: `tj.lolo.app`
 - Apple bundle ID: `tj.lolo.app`
 - Production Shop API: `https://lolo.tj/shop-api`
-- Текущая версия: `1.0.0+1`
+- Текущая версия: `1.0.0+2`
 
 После первой публикации идентификаторы менять нельзя. Для каждого обновления
 увеличивайте build number после `+` в `pubspec.yaml`.
